@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Menukaart — MnP Solutions</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Barlow+Condensed:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+
+:root{
+  --blue:    #281E64;
+  --blue60:  #6B63A3;
+  --blue20:  #EAE9F3;
+  --yellow:  #FABE00;
+  --yellow20:#FFF7CC;
+  --teal:    #64C8D2;
+  --green:   #96E69B;
+  --red:     #EF5D60;
+  --white:   #FFFFFF;
+  --off:     #F6F6F8;
+  --text:    #1A1A2E;
+  --muted:   #6B63A3;
+  --border:  #E0DEF0;
+}
+
+html{scroll-behavior:smooth;}
+body{font-family:'Barlow',sans-serif;background:var(--off);color:var(--text);min-height:100vh;}
+
+/* ── HEADER ── */
+header{
+  background:var(--blue);
+  height:68px;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 48px;
+  position:sticky;top:0;z-index:200;
+  box-shadow:0 2px 20px rgba(40,30,100,.35);
+}
+.logo{display:flex;align-items:center;gap:12px;}
+.logo-mark{
+  width:36px;height:36px;background:var(--yellow);border-radius:6px;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:16px;color:var(--blue);letter-spacing:-.5px;
+}
+.logo-name{
+  font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:20px;
+  color:var(--white);letter-spacing:.5px;
+}
+.logo-name span{color:var(--yellow);}
+.header-tag{font-size:11px;color:rgba(255,255,255,.45);letter-spacing:2px;text-transform:uppercase;}
+
+/* ── HERO ── */
+.hero{
+  background:var(--blue);
+  padding:64px 48px 72px;
+  position:relative;overflow:hidden;
+}
+.hero::after{
+  content:'';position:absolute;bottom:-1px;left:0;right:0;height:48px;
+  background:var(--off);
+  clip-path:ellipse(55% 100% at 50% 100%);
+}
+.hero-inner{max-width:1200px;margin:0 auto;}
+.hero-eyebrow{
+  display:inline-block;
+  background:var(--yellow);color:var(--blue);
+  font-size:11px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;
+  padding:4px 14px;border-radius:999px;margin-bottom:20px;
+}
+.hero h1{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:clamp(38px,5.5vw,64px);font-weight:800;
+  color:var(--white);line-height:1.05;margin-bottom:16px;
+}
+.hero h1 em{font-style:normal;color:var(--yellow);}
+.hero p{font-size:16px;color:rgba(255,255,255,.6);max-width:520px;line-height:1.7;margin-bottom:44px;}
+
+/* Filter nav */
+.filter-row{display:flex;flex-wrap:wrap;gap:8px;}
+.pill{
+  padding:9px 18px;border-radius:999px;font-size:13px;font-weight:600;cursor:pointer;
+  border:1.5px solid rgba(255,255,255,.2);
+  background:rgba(255,255,255,.07);color:rgba(255,255,255,.75);
+  transition:all .18s;user-select:none;
+}
+.pill:hover{background:rgba(250,190,0,.15);border-color:var(--yellow);color:var(--yellow);}
+.pill.active{background:var(--yellow);border-color:var(--yellow);color:var(--blue);}
+
+/* ── MAIN ── */
+main{max-width:1200px;margin:0 auto;padding:56px 32px 80px;}
+
+/* Domain grid */
+.domain-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(310px,1fr));
+  gap:24px;
+}
+
+/* ── DOMAIN CARD ── */
+.dcard{
+  background:var(--white);border-radius:16px;
+  border:1.5px solid var(--border);
+  box-shadow:0 2px 10px rgba(40,30,100,.06);
+  cursor:pointer;
+  transition:transform .2s,box-shadow .2s,border-color .2s;
+  overflow:hidden;
+  display:flex;flex-direction:column;
+}
+.dcard:hover{transform:translateY(-5px);box-shadow:0 14px 40px rgba(40,30,100,.14);border-color:var(--blue60);}
+
+.dcard-top{padding:28px 28px 20px;border-bottom:1px solid var(--off);display:flex;align-items:flex-start;gap:16px;}
+.dcard-icon{
+  width:52px;height:52px;border-radius:13px;
+  display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;
+}
+.dcard-title{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:700;color:var(--blue);line-height:1.2;}
+.dcard-sub{font-size:12px;color:var(--muted);margin-top:3px;font-weight:500;letter-spacing:.3px;}
+
+.dcard-body{padding:18px 28px 22px;flex:1;}
+.dcard-preview{
+  list-style:none;display:flex;flex-direction:column;gap:6px;
+}
+.dcard-preview li{
+  font-size:13px;color:var(--text);
+  display:flex;align-items:center;gap:9px;
+  line-height:1.4;
+}
+.dcard-preview li::before{
+  content:'';width:6px;height:6px;border-radius:50%;flex-shrink:0;background:var(--blue60);
+}
+.dcard-preview li.more{color:var(--muted);font-style:italic;font-size:12px;}
+.dcard-preview li.more::before{background:transparent;}
+
+.dcard-footer{
+  padding:14px 28px;border-top:1px solid var(--off);
+  display:flex;align-items:center;justify-content:space-between;
+}
+.dcard-cta{
+  font-size:12px;font-weight:700;color:var(--blue);letter-spacing:.5px;text-transform:uppercase;
+  display:flex;align-items:center;gap:6px;
+}
+.dcard-cta svg{transition:transform .2s;}
+.dcard:hover .dcard-cta svg{transform:translateX(4px);}
+
+/* colour accent stripe */
+.dcard[data-domain="security"]  .dcard-top{border-left:4px solid var(--blue);}
+.dcard[data-domain="privacy"]   .dcard-top{border-left:4px solid var(--teal);}
+.dcard[data-domain="legal"]     .dcard-top{border-left:4px solid var(--yellow);}
+.dcard[data-domain="quality"]   .dcard-top{border-left:4px solid var(--green);}
+.dcard[data-domain="assurance"] .dcard-top{border-left:4px solid var(--red);}
+.dcard[data-domain="academy"]   .dcard-top{border-left:4px solid #FABE00;}
+.dcard[data-domain="ai"]        .dcard-top{border-left:4px solid var(--blue60);}
+.dcard[data-domain="neven"]     .dcard-top{border-left:4px solid #64C8D2;}
+
+.dcard-icon.c-security  {background:#EAE9F3;}
+.dcard-icon.c-privacy   {background:#E5F8FA;}
+.dcard-icon.c-legal     {background:#FFF7CC;}
+.dcard-icon.c-quality   {background:#EDFAEE;}
+.dcard-icon.c-assurance {background:#FEE9EA;}
+.dcard-icon.c-academy   {background:#FFF7CC;}
+.dcard-icon.c-ai        {background:#EAE9F3;}
+.dcard-icon.c-neven     {background:#E5F8FA;}
+
+/* ── DETAIL OVERLAY ── */
+.overlay{
+  position:fixed;inset:0;z-index:500;
+  display:flex;align-items:stretch;justify-content:flex-end;
+  pointer-events:none;
+  opacity:0;
+  transition:opacity .25s;
+}
+.overlay.open{pointer-events:all;opacity:1;}
+
+.overlay-bg{
+  position:absolute;inset:0;background:rgba(40,30,100,.45);
+  backdrop-filter:blur(3px);
+  cursor:pointer;
+}
+
+.panel{
+  position:relative;z-index:1;
+  width:min(600px,100vw);
+  background:var(--white);
+  height:100vh;overflow-y:auto;
+  transform:translateX(100%);
+  transition:transform .3s cubic-bezier(.4,0,.2,1);
+  display:flex;flex-direction:column;
+}
+.overlay.open .panel{transform:translateX(0);}
+
+.panel-header{
+  background:var(--blue);
+  padding:36px 40px 32px;
+  position:sticky;top:0;z-index:2;
+  flex-shrink:0;
+}
+.panel-close{
+  position:absolute;top:20px;right:20px;
+  width:36px;height:36px;border-radius:50%;
+  background:rgba(255,255,255,.12);border:none;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;color:var(--white);
+  transition:background .15s;
+}
+.panel-close:hover{background:rgba(255,255,255,.25);}
+
+.panel-eyebrow{
+  font-size:10px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;
+  color:var(--yellow);margin-bottom:10px;
+}
+.panel-title{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:32px;font-weight:800;color:var(--white);line-height:1.1;
+}
+.panel-body{padding:36px 40px;flex:1;}
+
+.service-section{margin-bottom:32px;}
+.service-section:last-child{margin-bottom:0;}
+
+.service-section-title{
+  font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;
+  color:var(--muted);margin-bottom:12px;padding-bottom:8px;
+  border-bottom:1px solid var(--border);
+}
+
+.service-items{list-style:none;display:flex;flex-direction:column;gap:2px;}
+.service-item{
+  display:flex;align-items:flex-start;gap:12px;
+  padding:10px 12px;border-radius:8px;
+  transition:background .15s;
+}
+.service-item:hover{background:var(--off);}
+.service-item-dot{
+  width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:5px;
+}
+.service-item-text{font-size:14px;line-height:1.5;color:var(--text);}
+.service-item-desc{font-size:12px;color:var(--muted);margin-top:2px;}
+
+/* info box */
+.info-box{
+  background:var(--blue20);border-radius:12px;padding:20px 22px;
+  margin-top:28px;
+  border-left:4px solid var(--blue);
+}
+.info-box p{font-size:13px;color:var(--blue);line-height:1.6;}
+.info-box strong{font-weight:700;}
+
+/* hidden */
+.dcard.hidden{display:none;}
+
+/* ── FOOTER ── */
+footer{
+  background:var(--blue);color:rgba(255,255,255,.4);
+  text-align:center;padding:22px 48px;font-size:12px;letter-spacing:.5px;
+}
+footer strong{color:rgba(255,255,255,.7);}
+
+/* ── RESPONSIVE ── */
+@media(max-width:640px){
+  header{padding:0 20px;}
+  .hero{padding:48px 20px 60px;}
+  main{padding:32px 16px 60px;}
+  .domain-grid{grid-template-columns:1fr;}
+  .panel-header{padding:28px 24px 24px;}
+  .panel-body{padding:28px 24px;}
+}
+
+@media(prefers-reduced-motion:reduce){
+  .dcard,.overlay,.panel,.dcard-cta svg{transition:none;}
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="logo">
+    <div class="logo-mark">M<span style="color:var(--blue);"></span></div>
+    <div class="logo-name">Mn<span>P</span> Solutions</div>
+  </div>
+  <div class="header-tag">Interne Menukaart</div>
+</header>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-eyebrow">Dienstverlening &amp; Producten</div>
+    <h1>Alles wat MnP<br/><em>voor u kan betekenen.</em></h1>
+    <p>Een volledig overzicht van onze diensten — van informatiebeveiliging tot AI Security. Klik op een domein voor een volledig dienstenoverzicht.</p>
+    <div class="filter-row">
+      <div class="pill active" onclick="filter('all',this)">Alle domeinen</div>
+      <div class="pill" onclick="filter('security',this)">🔒 Informatiebeveiliging</div>
+      <div class="pill" onclick="filter('privacy',this)">🛡️ Privacy</div>
+      <div class="pill" onclick="filter('legal',this)">⚖️ Legal</div>
+      <div class="pill" onclick="filter('quality',this)">✅ Kwaliteit</div>
+      <div class="pill" onclick="filter('assurance',this)">📋 Assurance</div>
+      <div class="pill" onclick="filter('academy',this)">🎓 MNP Academy</div>
+      <div class="pill" onclick="filter('ai',this)">🤖 AI Security</div>
+      <div class="pill" onclick="filter('neven',this)">🔧 Aanvullende Diensten</div>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<main>
+  <div class="domain-grid" id="grid">
+
+    <!-- INFORMATIEBEVEILIGING -->
+    <div class="dcard" data-domain="security" onclick="openPanel('security')">
+      <div class="dcard-top">
+        <div class="dcard-icon c-security">🔒</div>
+        <div>
+          <div class="dcard-title">Informatiebeveiliging</div>
+          <div class="dcard-sub">Security · Normen &amp; Frameworks</div>
+        </div>
+      </div>
+      <div class="dcard-body">
+        <ul class="dcard-preview">
+          <li>ISO 27001 &amp; NEN 7510 — opzet, implementatie &amp; onderhoud</li>
+          <li>NIS2 &amp; CBW — gap-analyse &amp; implementatie</li>
+          <li>SOaaS / CISOaaS</li>
+          <li>Interne audits &amp; gap-analyses</li>
+          <li class="more">+ 12 meer diensten →</li>
+        </ul>
+      </div>
+      <div class="dcard-footer">
+        <span class="dcard-cta">Bekijk alle diensten <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+      </div>
+    </div>
+
+    <!-- PRIVACY -->
+    <div class="dcard" data-domain="privacy" onclick="openPanel('privacy')">
+      <div class="dcard-top">
+        <div class="dcard-icon c-privacy">🛡️</div>
+        <div>
+          <div class="dcard-title">Privacy</div>
+          <div class="dcard-sub">AVG · ISO 27701 · DPO</div>
+        </div>
+      </div>
+      <div class="dcard-body">
+        <ul class="dcard-preview">
+          <li>ISO 27701 — implementatie &amp; onderhoud</li>
+          <li>POaaS / FG as a Service / DPO</li>
+          <li>DPIA's, SCC's, FRIA's &amp; DTIA's</li>
+          <li>AVG Compliance</li>
+          <li class="more">+ 7 meer diensten →</li>
+        </ul>
+      </div>
+      <div class="dcard-footer">
+        <span class="dcard-cta">Bekijk alle diensten <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+      </div>
+    </div>
+
+    <!-- LEGAL -->
+    <div class="dcard" data-domain="legal" onclick="openPanel('legal')">
+      <div class="dcard-top">
+        <div class="dcard-icon c-legal">⚖️</div>
+        <div>
+          <div class="dcard-title">Legal</div>
+          <div class="dcard-sub">Juridische dienstverlening</div>
+        </div>
+      </div>
+      <div class="dcard-body">
+        <ul class="dcard-preview">
+          <li>Overeenkomsten &amp; contracten</li>
+          <li>Arbeidsovereenkomsten</li>
+          <li>Contracten met tussenleveranciers</li>
+        </ul>
+      </div>
+      <div class="dcard-footer">
+        <span class="dcard-cta">Bekijk alle diensten <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+      </div>
+    </div>
+
+    <!-- KWALITEIT -->
+    <div class="dcard" data-domain="quality" onclick="openPanel('quality')">
+      <div class="dcard-top">
+        <div class="dcard-icon c-quality">✅</div>
+        <div>
+          <div class="dcard-title">Kwaliteit</div>
+          <div class="dcard-sub">ISO 9001 · Procesoptimalisatie</div>
+        </div>
+      </div>
+      <div class="dcard-body">
+        <ul class="dcard-preview">
+          <li>ISO 9001 — opzet, implementatie &amp; onderhoud</li>
+          <li>Gap-analyse / nulmeting</li>
+          <li>QOaaS</li>
+          <li>Procesoptimalisatie &amp; leveranciersaudits</li>
+        </ul>
+      </div>
+      <div class="dcard-footer">
+        <span class="dcard-cta">Bekijk alle diensten <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+      </div>
+    </div>
+
+    <!-- ASSURANCE -->
+    <div class="dcard" data-domain="assurance" onclick="openPanel('assurance')">
+      <div class="dcard-top">
+        <div class="dcard-icon c-assurance">📋</div>
+        <div>
+          <div class="dcard-title">Assurance</div>
+          <div class="dcard-sub">ISAE 3402 · SOC 2 · Audits</div>
+        </div>
+      </div>
+      <div class="dcard-body">
+        <ul class="dcard-preview">
+          <li>ISAE 3402 Type 1 &amp; Type 2</li>
+          <li>SOC 2 Type 1 &amp; Type 2</li>
+          <li>Nulmeting / Gap-analyse</li>
+          <li>Interne audits — uitvoering &amp; begeleiding</li>
+        </ul>
+      </div>
+      <div class="dcard-footer">
+        <span class="dcard-cta">Bekijk alle diensten <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+      </div>
+    </div>
+
+    <!-- MNP ACADEMY -->
+    <div class="dcard" data-domain="academy" onclick="openPanel('academy')">
+      <div class="dcard-top">
+        <div class="dcard-icon c-academy">🎓</div>
+        <div>
+          <div class="dcard-title">MNP Academy</div>
+          <div class="dcard-sub">Training &amp; Bewustwording</div>
+        </div>
+      </div>
+      <div class="dcard-body">
+        <ul class="dcard-preview">
+          <li>Trainingen via verschillende platformen</li>
+          <li>Persoonlijke leerlijnen per doelgroep</li>
+          <li>Levensduur-gebaseerde leerpaden</li>
+          <li>Academy-abonnementen voor organisaties</li>
+        </ul>
+      </div>
+      <div class="dcard-footer">
+        <span class="dcard-cta">Bekijk alle diensten <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+      </div>
+    </div>
+
+    <!-- AI SECURITY -->
+    <div class="dcard" data-domain="ai" onclick="openPanel('ai')">
+      <div class="dcard-top">
+        <div class="dcard-icon c-ai">🤖</div>
+        <div>
+          <div class="dcard-title">AI Security</div>
+          <div class="dcard-sub">AI Act · ISO 42001</div>
+        </div>
+      </div>
+      <div class="dcard-body">
+        <ul class="dcard-preview">
+          <li>AI Act — implementatie &amp; compliance</li>
+          <li>ISO 42001 — implementatie &amp; onderhoud</li>
+          <li>Interne audits AI-systemen</li>
+          <li>Gap-analyse AI-volwassenheid</li>
+        </ul>
+      </div>
+      <div class="dcard-footer">
+        <span class="dcard-cta">Bekijk alle diensten <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+      </div>
+    </div>
+
+    <!-- AANVULLENDE DIENSTEN -->
+    <div class="dcard" data-domain="neven" onclick="openPanel('neven')">
+      <div class="dcard-top">
+        <div class="dcard-icon c-neven">🔧</div>
+        <div>
+          <div class="dcard-title">Aanvullende Diensten</div>
+          <div class="dcard-sub">Specialistische &amp; aangrenzende trajecten</div>
+        </div>
+      </div>
+      <div class="dcard-body">
+        <ul class="dcard-preview">
+          <li>2RVW</li>
+          <li>ISO 14001 — milieumanagementsysteem</li>
+          <li>Trustbound implementatie</li>
+          <li>GRC tooling implementatie</li>
+        </ul>
+      </div>
+      <div class="dcard-footer">
+        <span class="dcard-cta">Bekijk alle diensten <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<footer>
+  <strong>MnP Solutions</strong> &nbsp;·&nbsp; Interne menukaart — vertrouwelijk &nbsp;·&nbsp; 2026
+</footer>
+
+<!-- ── DETAIL OVERLAY ── -->
+<div class="overlay" id="overlay">
+  <div class="overlay-bg" onclick="closePanel()"></div>
+  <div class="panel" id="panel">
+    <div class="panel-header" id="panelHeader">
+      <button class="panel-close" onclick="closePanel()">
+        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+      <div class="panel-eyebrow" id="panelEyebrow">Domein</div>
+      <div class="panel-title" id="panelTitle">Titel</div>
+    </div>
+    <div class="panel-body" id="panelBody"></div>
+  </div>
+</div>
+
+<script>
+const data = {
+
+  security: {
+    eyebrow: 'Informatiebeveiliging',
+    title: 'Informatiebeveiliging',
+    sections: [
+      {
+        title: 'Normen — Opzet, Implementatie, Onderhoud & Verbetering',
+        color: '#281E64',
+        items: [
+          { text: 'ISO 27001', desc: 'Internationale norm voor informatiebeveiliging — opzet, implementatie, onderhoud en verbetering van het ISMS.' },
+          { text: 'NEN 7510', desc: 'Nederlandse norm voor informatiebeveiliging in de gezondheidszorg.' },
+          { text: 'BIO — Baseline Informatiebeveiliging Overheid', desc: 'Ondersteuning en implementatie voor overheidsorganisaties.' },
+          { text: 'NIST Framework', desc: 'Implementatie van het NIST Cybersecurity Framework.' },
+          { text: 'ABRO', desc: 'Implementatie en toepassing van het ABRO-raamwerk.' },
+          { text: 'PART-IS', desc: 'Ondersteuning bij PART-IS compliance (luchtvaartsector).' },
+        ]
+      },
+      {
+        title: 'Wet- & Regelgeving',
+        color: '#281E64',
+        items: [
+          { text: 'NIS2 — Gap-analyse & nulmeting', desc: 'Inzicht in de huidige staat van compliance ten opzichte van de NIS2-richtlijn.' },
+          { text: 'NIS2 & CBW — Implementatie', desc: 'Begeleiding naar volledige NIS2/CBW-compliance, inclusief onderhoud en verbetering.' },
+        ]
+      },
+      {
+        title: 'Als-een-Dienst',
+        color: '#281E64',
+        items: [
+          { text: 'SOaaS — Security Officer as a Service', desc: 'Flexibele inzet van een ervaren Security Officer, aan en uit te schakelen naar behoefte.' },
+          { text: 'CISOaaS — CISO as a Service', desc: 'Strategische beveiligingsleiding zonder de overhead van een vaste aanstelling.' },
+          { text: 'Product Owner Digitale Veiligheid', desc: 'Regie op digitale veiligheid vanuit producteigenaarsperspectief.' },
+        ]
+      },
+      {
+        title: 'Audits, Analyses & Assessments',
+        color: '#281E64',
+        items: [
+          { text: 'Interne audits — begeleiding & uitvoering', desc: 'Voorbereiding, uitvoering en rapportage van interne beveiligingsaudits.' },
+          { text: 'Gap-analyse / nulmeting', desc: 'Helder beeld van de huidige beveiligingssituatie en de stappen naar het gewenste niveau.' },
+          { text: 'Maturity model', desc: 'Assessment van de beveiligingsvolwassenheid van de organisatie.' },
+        ]
+      },
+      {
+        title: 'Operationeel & Crisis',
+        color: '#281E64',
+        items: [
+          { text: 'Directietrainingen', desc: 'Bewustwording en kennisoverdracht op bestuurlijk niveau.' },
+          { text: 'Crisis situaties & crisisoefeningen', desc: 'Voorbereiding op en begeleiding bij crisissituaties.' },
+          { text: 'BCM — Business Continuity Management', desc: 'Opzet en verbetering van bedrijfscontinuïteitsmanagement.' },
+          { text: 'BIC — Business Impact & Continuity', desc: 'Analyse en beheersing van bedrijfsimpact.' },
+          { text: 'Incidentmanagement', desc: 'Afhandeling, communicatie, opvolging en verbetering van het incidentproces.' },
+        ]
+      },
+    ]
+  },
+
+  privacy: {
+    eyebrow: 'Privacy',
+    title: 'Privacy',
+    sections: [
+      {
+        title: 'Normen — Opzet, Implementatie, Onderhoud & Verbetering',
+        color: '#64C8D2',
+        items: [
+          { text: 'ISO 27701', desc: 'Privacy Information Management System — opzet, implementatie en onderhoud.' },
+          { text: 'AVG Compliance', desc: 'Begeleiding naar en onderhoud van AVG/GDPR-compliance.' },
+        ]
+      },
+      {
+        title: 'Als-een-Dienst',
+        color: '#64C8D2',
+        items: [
+          { text: 'POaaS — Privacy Officer as a Service', desc: 'Ervaren Privacy Officer beschikbaar wanneer u dat nodig heeft.' },
+          { text: 'FG as a Service / DPO', desc: 'Functionaris Gegevensbescherming of Data Protection Officer als externe dienst.' },
+        ]
+      },
+      {
+        title: 'Documentatie & Analyses',
+        color: '#64C8D2',
+        items: [
+          { text: "DPIA's — Data Protection Impact Assessments", desc: 'Uitvoering van gegevensbeschermingseffectbeoordelingen.' },
+          { text: "SCC's — Standard Contractual Clauses", desc: 'Opstellen en beoordelen van standaard contractbepalingen.' },
+          { text: "FRIA's — Fundamental Rights Impact Assessments", desc: 'Beoordeling van grondrechtelijke impact.' },
+          { text: "DTIA's — Data Transfer Impact Assessments", desc: 'Risicoanalyse bij internationale gegevensdoorgifte.' },
+          { text: 'Verwerkersovereenkomsten & registers', desc: 'Opstellen, beheren en actueel houden van verwerkersovereenkomsten en het verwerkingsregister.' },
+          { text: 'Privacystatements', desc: 'Opstellen en actualiseren van privacyverklaringen.' },
+          { text: 'Intercompany verklaringen', desc: 'Juridisch correcte verklaringen voor gegevensuitwisseling binnen groepsstructuren.' },
+        ]
+      },
+      {
+        title: 'Training & Bewustwording',
+        color: '#64C8D2',
+        items: [
+          { text: 'Bewustwordingssessies', desc: 'Interactieve sessies om medewerkers bewust te maken van privacyrisico\'s en -verplichtingen.' },
+        ]
+      },
+    ]
+  },
+
+  legal: {
+    eyebrow: 'Legal',
+    title: 'Legal',
+    sections: [
+      {
+        title: 'Juridische Dienstverlening',
+        color: '#FABE00',
+        items: [
+          { text: 'Overeenkomsten', desc: 'Opstellen en beoordelen van diverse zakelijke overeenkomsten.' },
+          { text: 'Arbeidsovereenkomsten', desc: 'Arbeidsrechtelijke ondersteuning bij het opstellen en aanpassen van arbeidscontracten.' },
+          { text: 'Contracten met tussenleveranciers', desc: 'Juridische begeleiding bij contractering van leveranciers en onderaannemers.' },
+        ]
+      },
+    ]
+  },
+
+  quality: {
+    eyebrow: 'Kwaliteit',
+    title: 'Kwaliteit',
+    sections: [
+      {
+        title: 'Normen — Opzet, Implementatie, Onderhoud & Verbetering',
+        color: '#96E69B',
+        items: [
+          { text: 'ISO 9001', desc: 'Internationale norm voor kwaliteitsmanagement — opzet, implementatie en onderhoud.' },
+          { text: 'Gap-analyse / nulmeting', desc: 'Helder beeld van de huidige kwaliteitssituatie ten opzichte van de norm.' },
+        ]
+      },
+      {
+        title: 'Als-een-Dienst',
+        color: '#96E69B',
+        items: [
+          { text: 'QOaaS — Quality Officer as a Service', desc: 'Flexibele inzet van een Quality Officer afgestemd op uw behoeften.' },
+        ]
+      },
+      {
+        title: 'Audits & Verbetering',
+        color: '#96E69B',
+        items: [
+          { text: 'Interne audits — uitvoering & begeleiding', desc: 'Planning, uitvoering en rapportage van interne kwaliteitsaudits.' },
+          { text: 'Procesoptimalisatie', desc: 'Identificeren en verbeteren van inefficiënties in bedrijfsprocessen.' },
+          { text: 'Leveranciersaudits', desc: 'Beoordeling van leveranciers op kwaliteit, continuïteit en compliance.' },
+        ]
+      },
+    ]
+  },
+
+  assurance: {
+    eyebrow: 'Assurance',
+    title: 'Assurance',
+    sections: [
+      {
+        title: 'Standaarden — Opzet, Implementatie & Rapportage',
+        color: '#EF5D60',
+        items: [
+          { text: 'ISAE 3402 Type 1', desc: 'Assurance-rapport over de opzet van beheersmaatregelen bij uitbestedende organisaties.' },
+          { text: 'ISAE 3402 Type 2', desc: 'Assurance-rapport over de opzet én werking van beheersmaatregelen over een rapportageperiode.' },
+          { text: 'SOC 2 Type 1', desc: 'Rapportage over de opzet van beveiligings- en privacycontroles.' },
+          { text: 'SOC 2 Type 2', desc: 'Rapportage over de opzet én werking van beveiligings- en privacycontroles.' },
+        ]
+      },
+      {
+        title: 'Analyses & Audits',
+        color: '#EF5D60',
+        items: [
+          { text: 'Nulmeting / Gap-analyse', desc: 'Bepaling van de huidige staat en de te nemen stappen richting assurance-gereedheid.' },
+          { text: 'Interne audits — uitvoering & begeleiding', desc: 'Begeleiding en uitvoering van interne audits ter voorbereiding op externe toetsing.' },
+        ]
+      },
+    ]
+  },
+
+  academy: {
+    eyebrow: 'MNP Academy',
+    title: 'MNP Academy',
+    sections: [
+      {
+        title: 'Trainingen & Platformen',
+        color: '#FABE00',
+        items: [
+          { text: 'Verschillende leerplatformen', desc: 'Trainingen worden aangeboden via meerdere platformen, afgestemd op de infrastructuur van de organisatie.' },
+          { text: 'Academy-abonnementen', desc: 'Organisatie-brede toegang tot het volledige MNP Academy aanbod.' },
+        ]
+      },
+      {
+        title: 'Leerlijnen & Doelgroepen',
+        color: '#FABE00',
+        items: [
+          { text: 'Leerlijnen per doelgroep', desc: 'Gepersonaliseerde leerpaden voor medewerkers, managers en directie.' },
+          { text: 'Levensduur-gebaseerde leerpaden', desc: 'Continu leren gekoppeld aan de loopbaan en ontwikkelingsfase van de medewerker of afnemer.' },
+        ]
+      },
+    ]
+  },
+
+  ai: {
+    eyebrow: 'AI Security',
+    title: 'AI Security',
+    sections: [
+      {
+        title: 'Normen & Regelgeving — Opzet, Implementatie, Onderhoud & Verbetering',
+        color: '#6B63A3',
+        items: [
+          { text: 'AI Act', desc: 'Implementatie van en compliance met de Europese AI-verordening.' },
+          { text: 'ISO 42001', desc: 'Internationale norm voor AI-managementsystemen — opzet, implementatie en onderhoud.' },
+        ]
+      },
+      {
+        title: 'Audits & Assessments',
+        color: '#6B63A3',
+        items: [
+          { text: 'Interne audits AI-systemen', desc: 'Uitvoering van interne audits gericht op AI-toepassingen en -risico\'s.' },
+          { text: 'Gap-analyse AI-volwassenheid', desc: 'Bepaling van de huidige AI-volwassenheid en het pad naar compliance.' },
+        ]
+      },
+    ]
+  },
+
+  neven: {
+    eyebrow: 'Aanvullende Diensten',
+    title: 'Aanvullende Diensten',
+    sections: [
+      {
+        title: 'Specialistische & Aangrenzende Trajecten',
+        color: '#64C8D2',
+        items: [
+          { text: '2RVW', desc: 'Ondersteuning bij 2RVW-gerelateerde vraagstukken.' },
+          { text: 'ISO 14001', desc: 'Milieumanagementsysteem — implementatie en onderhoud.' },
+          { text: 'Trustbound implementatie', desc: 'Begeleiding bij de implementatie van het Trustbound-platform.' },
+          { text: 'GRC tooling implementatie', desc: 'Selectie, inrichting en implementatie van Governance, Risk & Compliance tooling.' },
+        ]
+      },
+    ]
+  },
+
+};
+
+function openPanel(domain){
+  const d = data[domain];
+  if(!d) return;
+  document.getElementById('panelEyebrow').textContent = d.eyebrow;
+  document.getElementById('panelTitle').textContent   = d.title;
+
+  let html = '';
+  d.sections.forEach(sec => {
+    html += `<div class="service-section">
+      <div class="service-section-title">${sec.title}</div>
+      <ul class="service-items">`;
+    sec.items.forEach(item => {
+      html += `<li class="service-item">
+        <div class="service-item-dot" style="background:${sec.color}"></div>
+        <div>
+          <div class="service-item-text"><strong>${item.text}</strong></div>
+          ${item.desc ? `<div class="service-item-desc">${item.desc}</div>` : ''}
+        </div>
+      </li>`;
+    });
+    html += `</ul></div>`;
+  });
+
+  html += `<div class="info-box"><p><strong>Meer weten?</strong> Neem contact op via <a href="mailto:info@mnpsolutions.nl" style="color:var(--blue);font-weight:600;">info@mnpsolutions.nl</a> of bel <strong>020 84 64 287</strong> voor een toelichting op deze dienstverlening.</p></div>`;
+
+  document.getElementById('panelBody').innerHTML = html;
+  document.getElementById('overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closePanel(){
+  document.getElementById('overlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function filter(domain, el){
+  document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+  document.querySelectorAll('.dcard').forEach(c => {
+    c.classList.toggle('hidden', domain !== 'all' && c.dataset.domain !== domain);
+  });
+}
+
+document.addEventListener('keydown', e => { if(e.key==='Escape') closePanel(); });
+</script>
+</body>
+</html>
